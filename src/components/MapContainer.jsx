@@ -1,38 +1,21 @@
 import React, { Component} from 'react';
 import { GoogleApiWrapper, Map, Marker, InfoWindow } from 'google-maps-react';
+import '../styles/MapContainer.css';
 
 export class MapContainer extends Component {
 
   state =  {
-    markers: [
-      {
-        place: 'Badalona',
-        position: {
-          lat: 41.446988,
-          lng: 2.245032
-        },
-        tags: ["badalona"]
-      },
-      {
-        place: 'Barcelona Airport',
-        position: {
-          lat: 41.297445,
-          lng: 2.083294
-        },
-        tags: ["airport"]
-      },
-      {
-        place: 'El Papiol',
-        position: {
-          lat: 41.438722,
-          lng: 2.012628
-        },
-        tags: ["elpapiol"]
-      }
-    ],
+    markers: [],
     infoWindowVisibility: false,
     activeMarker: {},
     selectedMarker: {}
+  }
+
+  componentDidMount(props) {
+    fetch(`http://192.168.1.230:1234/${this.props.user}`)
+      .then(res => res.json())
+      .then(res => this.setState({ markers: res.markers }))
+      .catch(error => console.log(error))
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -41,20 +24,23 @@ export class MapContainer extends Component {
       activeMarker: marker,
       infoWindowVisibility: true
     });
+    console.log(this.state.selectedMarker)
   }
 
   render() {
+    if (!this.state.marker) {
     return (
       <div>
         <Map google={this.props.google} initialCenter={{lat: 41.438722, lng: 2.012628}} zoom={11}>
-
           {this.state.markers.map((marker) => {
             return (
               <Marker
-              position={marker.position}
-              title={marker.place}
+              position={marker.latLng}
+              title={marker.title}
               key={Math.round(Math.random() * 10000 + 1)}
               onClick={this.onMarkerClick}
+              tags={marker.tags}
+              pic={marker.pic}
             />
             );
             }
@@ -64,12 +50,17 @@ export class MapContainer extends Component {
             marker={this.state.activeMarker}
             visible={this.state.infoWindowVisibility}
           >
-            <h2>{this.state.selectedMarker.title}</h2>
+            <div className="infowindow-container">
+              <h2>{this.state.selectedMarker.title}</h2>
+              <div>
+                <img src={this.state.selectedMarker.pic} alt='' width='200' />
+              </div>
+            </div>
           </InfoWindow>
 
         </Map>
       </div>
-    );
+    );}
   }
 }
 
