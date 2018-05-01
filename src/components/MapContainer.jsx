@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import { GoogleApiWrapper, Map, Marker, InfoWindow } from 'google-maps-react';
 import '../styles/MapContainer.css';
+import TagFilters from './TagFilters.jsx';
 
 export class MapContainer extends Component {
 
@@ -12,7 +13,7 @@ export class MapContainer extends Component {
   }
 
   componentDidMount(props) {
-    fetch(`http://192.168.1.230:1234/${this.props.user}`)
+    fetch(`http://192.168.1.229:1234/${this.props.user}`)
       .then(res => res.json())
       .then(res => this.setState({ markers: res.markers }))
       .catch(error => console.log(error))
@@ -57,6 +58,9 @@ export class MapContainer extends Component {
               </div>
             </div>
           </InfoWindow>
+
+
+          <TagFilters />
 
         </Map>
       </div>
