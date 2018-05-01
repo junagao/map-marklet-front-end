@@ -17,11 +17,17 @@ export default class TagFilters extends React.Component {
     let allTags = [];
     if (markers.length > 0) {
       markers.map((marker) => {
-        marker.tags.map((tag) => {
-          allTags.push(tag);
+        return marker.tags.map((tag) => {
+          return allTags.push(tag);
         });
       });
     }
+    const uniq = (allTags) => {
+      return allTags.sort().filter((item, pos, arr) => {
+        return !pos || item !== arr[pos - 1];
+      })
+    }
+
     return (
 
       <MuiThemeProvider>
@@ -32,7 +38,7 @@ export default class TagFilters extends React.Component {
             onClick={this.handleToggle}
           />
           <Drawer open={this.state.open}>
-          {allTags.map((tag) => {
+          {uniq(allTags).map((tag) => {
             return (
               <MenuItem key={Math.round(Math.random() * 10000 + 1)}>
                 {tag}
