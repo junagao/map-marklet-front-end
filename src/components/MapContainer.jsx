@@ -25,7 +25,6 @@ export class MapContainer extends Component {
       activeMarker: marker,
       infoWindowVisibility: true
     });
-    console.log(this.state.selectedMarker)
   }
 
   render() {
@@ -60,7 +59,7 @@ export class MapContainer extends Component {
           </InfoWindow>
 
 
-          <TagFilters />
+          <TagFilters markers={this.state.markers} />
 
         </Map>
       </div>

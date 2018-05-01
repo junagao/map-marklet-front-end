@@ -5,18 +5,25 @@ import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 export default class TagFilters extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false
-    };
+  state = {
+    open: false,
+    tags: []
   }
 
   handleToggle = () => this.setState({open: !this.state.open});
 
   render() {
+    const markers = this.props.markers;
+    let allTags = [];
+    if (markers.length > 0) {
+      markers.map((marker) => {
+        marker.tags.map((tag) => {
+          allTags.push(tag);
+        });
+      });
+    }
     return (
+
       <MuiThemeProvider>
         <div>
           <RaisedButton
@@ -25,11 +32,17 @@ export default class TagFilters extends React.Component {
             onClick={this.handleToggle}
           />
           <Drawer open={this.state.open}>
-            <MenuItem>Barcelona</MenuItem>
-            <MenuItem>Spain</MenuItem>
+          {allTags.map((tag) => {
+            return (
+              <MenuItem key={Math.round(Math.random() * 10000 + 1)}>
+                {tag}
+              </MenuItem>
+              );
+          })}
           </Drawer>
         </div>
       </MuiThemeProvider>
+
     );
   }
 }
