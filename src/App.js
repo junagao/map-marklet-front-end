@@ -6,7 +6,7 @@ class App extends Component {
 
   renderMapContainer = (user) => {
     const currentUser = user.match.params.user
-    console.log('tags: ',user.location.search.split(/[?+]/).splice(1))
+    // console.log('tags: ',user.location.search.split(/[?+]/).splice(1))
     if(currentUser) {
       return <MapContainer user={currentUser} />;
     }
