@@ -53,6 +53,7 @@ export class MapContainer extends Component {
               onClick={this.onMarkerClick}
               tags={marker.tags}
               pic={marker.pic}
+              url={marker.url}
             />
             );
             }
@@ -63,10 +64,13 @@ export class MapContainer extends Component {
             visible={this.state.infoWindowVisibility}
           >
             <div className="infowindow-container">
-              <h2>{this.state.selectedMarker.title}</h2>
+              <a href={this.state.selectedMarker.url} target="_blank">
+                <h2>{this.state.selectedMarker.title}</h2>
+              </a>
               <div>
                 <img src={this.state.selectedMarker.pic} alt='' width='200' />
               </div>
+              <small>{this.state.selectedMarker.tags}</small>
             </div>
           </InfoWindow>
 
