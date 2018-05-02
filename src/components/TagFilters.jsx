@@ -10,18 +10,23 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 export default class TagFilters extends React.Component {
   state = {
     open: false,
-    tags: []
+    tags: [],
+    selectedTag: {}
   }
 
   handleToggle = () => this.setState({open: !this.state.open});
+
+  onTagClick = (target, props, value) => {
+
+  }
 
   render() {
     const markers = this.props.markers;
     let allTags = [];
     if (markers.length > 0) {
       markers.map((marker) => {
-        return marker.tags.map((tag) => {
-          return allTags.push(tag);
+        marker.tags.map((tag) => {
+          return allTags.push(tag.id);
         });
       });
     }
@@ -51,8 +56,11 @@ export default class TagFilters extends React.Component {
             />
             {uniq(allTags).map((tag) => {
             return (
-              <MenuItem key={Math.round(Math.random() * 10000 + 1)}>
-                {tag}
+              <MenuItem
+                tag={this.state.selectedTag}
+                onClick={this.onTagClick.bind(this, tag)}
+                key={Math.round(Math.random() * 10000 + 1)}>
+                  {tag}
               </MenuItem>
               );
           })}

@@ -26,7 +26,6 @@ export class MapContainer extends Component {
       infoWindowVisibility: true
     });
   }
-
   render() {
     if (this.state.markers) {
       let points = [];
@@ -35,6 +34,7 @@ export class MapContainer extends Component {
       });
       const bounds = new this.props.google.maps.LatLngBounds();
       points.map((latLng) => bounds.extend(latLng));
+
     return (
       <div>
         <Map
@@ -44,14 +44,14 @@ export class MapContainer extends Component {
           zoom={11}
           setAutoZoom="true"
         >
-          {this.state.markers.map((marker) => {
+          {this.state.visibleMarkers.map((marker) => {
             return (
               <Marker
               position={marker.latLng}
               title={marker.title}
               key={Math.round(Math.random() * 10000 + 1)}
               onClick={this.onMarkerClick}
-              tags={marker.tags}
+              tags={marker.tags.map((tag) => tag.id)}
               pic={marker.pic}
               url={marker.url}
             />
@@ -67,19 +67,19 @@ export class MapContainer extends Component {
               <a href={this.state.selectedMarker.url} target="_blank">
                 <h2>{this.state.selectedMarker.title}</h2>
               </a>
+              <small>{this.state.selectedMarker.tags && this.state.selectedMarker.tags.join(', ')}</small>
               <div>
                 <img src={this.state.selectedMarker.pic} alt='' width='200' />
               </div>
-              <small>{this.state.selectedMarker.tags}</small>
             </div>
           </InfoWindow>
-
 
           <TagFilters markers={this.state.markers} />
 
         </Map>
       </div>
-    );}
+    );
+  }
   }
 }
 
