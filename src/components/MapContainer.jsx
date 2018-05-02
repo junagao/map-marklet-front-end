@@ -34,6 +34,7 @@ export class MapContainer extends Component {
       });
       const bounds = new this.props.google.maps.LatLngBounds();
       points.map((latLng) => bounds.extend(latLng));
+
     return (
       <div>
         <Map
@@ -43,14 +44,14 @@ export class MapContainer extends Component {
           zoom={11}
           setAutoZoom="true"
         >
-          {this.state.markers.map((marker) => {
+          {this.state.visibleMarkers.map((marker) => {
             return (
               <Marker
               position={marker.latLng}
               title={marker.title}
               key={Math.round(Math.random() * 10000 + 1)}
               onClick={this.onMarkerClick}
-              tags={marker.tags}
+              tags={marker.tags.map((tag) => tag.id)}
               pic={marker.pic}
               url={marker.url}
             />
