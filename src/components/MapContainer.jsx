@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import { GoogleApiWrapper, Map, Marker, InfoWindow } from 'google-maps-react';
 import '../styles/MapContainer.css';
+import TagFilters from './TagFilters.jsx';
 
 export class MapContainer extends Component {
 
@@ -12,7 +13,7 @@ export class MapContainer extends Component {
   }
 
   componentDidMount(props) {
-    fetch(`http://192.168.1.230:1234/${this.props.user}`)
+    fetch(`http://192.168.1.229:1234/${this.props.user}`)
       .then(res => res.json())
       .then(res => this.setState({ markers: res.markers }))
       .catch(error => console.log(error))
@@ -24,14 +25,25 @@ export class MapContainer extends Component {
       activeMarker: marker,
       infoWindowVisibility: true
     });
-    console.log(this.state.selectedMarker)
   }
 
   render() {
-    if (!this.state.marker) {
+    if (this.state.markers) {
+      let points = [];
+      this.state.markers.map((marker) => {
+        return points.push(marker.latLng);
+      });
+      const bounds = new this.props.google.maps.LatLngBounds();
+      points.map((latLng) => bounds.extend(latLng));
     return (
       <div>
-        <Map google={this.props.google} initialCenter={{lat: 41.438722, lng: 2.012628}} zoom={11}>
+        <Map
+          google={this.props.google}
+          bounds={bounds}
+          initialCenter={{lat: 41.438722, lng: 2.012628}}
+          zoom={11}
+          setAutoZoom="true"
+        >
           {this.state.markers.map((marker) => {
             return (
               <Marker
@@ -41,6 +53,7 @@ export class MapContainer extends Component {
               onClick={this.onMarkerClick}
               tags={marker.tags}
               pic={marker.pic}
+              url={marker.url}
             />
             );
             }
@@ -51,12 +64,18 @@ export class MapContainer extends Component {
             visible={this.state.infoWindowVisibility}
           >
             <div className="infowindow-container">
-              <h2>{this.state.selectedMarker.title}</h2>
+              <a href={this.state.selectedMarker.url} target="_blank">
+                <h2>{this.state.selectedMarker.title}</h2>
+              </a>
               <div>
                 <img src={this.state.selectedMarker.pic} alt='' width='200' />
               </div>
+              <small>{this.state.selectedMarker.tags}</small>
             </div>
           </InfoWindow>
+
+
+          <TagFilters markers={this.state.markers} />
 
         </Map>
       </div>
