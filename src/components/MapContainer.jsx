@@ -28,10 +28,22 @@ export class MapContainer extends Component {
   }
 
   render() {
-    if (!this.state.marker) {
+    if (this.state.markers) {
+      let points = [];
+      this.state.markers.map((marker) => {
+        return points.push(marker.latLng);
+      });
+      const bounds = new this.props.google.maps.LatLngBounds();
+      points.map((latLng) => bounds.extend(latLng));
     return (
       <div>
-        <Map google={this.props.google} initialCenter={{lat: 41.438722, lng: 2.012628}} zoom={11}>
+        <Map
+          google={this.props.google}
+          bounds={bounds}
+          initialCenter={{lat: 41.438722, lng: 2.012628}}
+          zoom={11}
+          setAutoZoom="true"
+        >
           {this.state.markers.map((marker) => {
             return (
               <Marker
