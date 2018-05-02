@@ -26,7 +26,6 @@ export class MapContainer extends Component {
       infoWindowVisibility: true
     });
   }
-
   render() {
     if (this.state.markers) {
       let points = [];
@@ -67,19 +66,19 @@ export class MapContainer extends Component {
               <a href={this.state.selectedMarker.url} target="_blank">
                 <h2>{this.state.selectedMarker.title}</h2>
               </a>
+              <small>{this.state.selectedMarker.tags && this.state.selectedMarker.tags.join(', ')}</small>
               <div>
                 <img src={this.state.selectedMarker.pic} alt='' width='200' />
               </div>
-              <small>{this.state.selectedMarker.tags}</small>
             </div>
           </InfoWindow>
-
 
           <TagFilters markers={this.state.markers} />
 
         </Map>
       </div>
-    );}
+    );
+  }
   }
 }
 
