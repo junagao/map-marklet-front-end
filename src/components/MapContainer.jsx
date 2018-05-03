@@ -13,7 +13,7 @@ export class MapContainer extends Component {
   }
 
   componentDidMount(props) {
-    fetch(`http://192.168.1.229:1234/${this.props.user}`)
+    fetch(`http://localhost:1234/${this.props.user}`)
       .then(res => res.json())
       .then(res => this.setState({ markers: res.markers }))
       .catch(error => console.log(error))
@@ -42,9 +42,8 @@ export class MapContainer extends Component {
           bounds={bounds}
           initialCenter={{lat: 41.438722, lng: 2.012628}}
           zoom={11}
-          setAutoZoom="true"
-        >
-          {this.state.visibleMarkers.map((marker) => {
+          setAutoZoom="true">
+          {this.state.markers.map((marker) => {
             return (
               <Marker
               position={marker.latLng}
