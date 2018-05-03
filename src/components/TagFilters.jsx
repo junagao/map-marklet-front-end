@@ -49,7 +49,6 @@ export default class TagFilters extends React.Component {
           <Drawer open={this.state.open}>
             <RaisedButton
               label="Hide"
-              secondary={true}
               style={styles}
               icon={<NavigationClose />}
               onClick={this.handleToggle}
@@ -78,5 +77,5 @@ const styles = {
   boxShadow: '0 3px 5px 2px rgba(56, 58, 61, .30)',
   marginTop: 50,
   marginLeft: 15,
-  backgroundColor: 'rgb(255, 221, 2)'
+  backgroundColor: '#a5b076',
 };
